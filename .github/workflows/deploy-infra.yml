@@ -1,0 +1,36 @@
+name: Deploy Azure Infrastructure with Bicep
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+      - '.github/workflows/deploy-infra.yml'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-infra:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_84BC8029CDD44F0091C5875BE1CB2B21 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D8FB422FA5834E4F8689D5AD29CB3A59 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_68145B569584481F874610D6A80B4168 }}
+
+      - name: Deploy Bicep
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: rg-azure-github-demo
+          template: ./infra/main.bicep
