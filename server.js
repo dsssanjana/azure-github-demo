@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("Hello from Azure App Service deployed using GitHub Actions!");
+  res.send("Hello from Sanjana's Azure GitHub Actions Demo!");
 });
 
 app.listen(port, () => {
